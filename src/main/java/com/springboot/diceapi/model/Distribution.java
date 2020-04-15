@@ -14,6 +14,10 @@ public class Distribution {
     private int totalOfDiceValues;
     private int frequency;
 
+    public  Distribution() {
+
+    }
+
     public Distribution(int diceSimulationId, int totalOfDiceValues, int frequency) {
         this.diceSimulationId = diceSimulationId;
         this.totalOfDiceValues = totalOfDiceValues;
