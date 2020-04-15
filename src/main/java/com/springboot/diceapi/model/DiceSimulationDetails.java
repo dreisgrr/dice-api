@@ -16,6 +16,10 @@ public class DiceSimulationDetails {
     private int diceNumber;
     private int diceValue;
 
+    public DiceSimulationDetails() {
+
+    }
+
     public DiceSimulationDetails(int diceSimulationId, int rollNumber, int diceNumber, int diceValue) {
         this.diceSimulationId = diceSimulationId;
         this.rollNumber = rollNumber;

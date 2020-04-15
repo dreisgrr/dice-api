@@ -1,21 +1,33 @@
 package com.springboot.diceapi.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.UUID;
+import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
+@Table (name = "diceSimulation")
 public class DiceSimulation {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "simulation_generator")
+    @SequenceGenerator(
+            name = "simulation_generator",
+            sequenceName = "simulation_sequence",
+            initialValue = 1000
+    )
     private int id;
-    private int diceConfigId;
+    @Min(value = 4L)
+    private int sidesOfDie;
+    @Min(value = 1L)
+    private int numberOfDice;
+    @Min(value = 1L)
     private int numberOfRolls;
 
-    public DiceSimulation(int diceConfigId, int numberOfRolls) {
-        this.diceConfigId = diceConfigId;
+    public DiceSimulation() {
+
+    }
+
+    public DiceSimulation(int sidesOfDie, int numberOfDice, int numberOfRolls) {
+        this.sidesOfDie = sidesOfDie;
+        this.numberOfDice = numberOfDice;
         this.numberOfRolls = numberOfRolls;
     }
 
@@ -23,8 +35,12 @@ public class DiceSimulation {
         return id;
     }
 
-    public int getDiceConfigId() {
-        return diceConfigId;
+    public int getSidesOfDie() {
+        return sidesOfDie;
+    }
+
+    public int getNumberOfDice() {
+        return numberOfDice;
     }
 
     public int getNumberOfRolls() {
@@ -35,8 +51,12 @@ public class DiceSimulation {
         this.id = id;
     }
 
-    public void setDiceConfigId(int diceConfigId) {
-        this.diceConfigId = diceConfigId;
+    public void setSidesOfDie(int sidesOfDie) {
+        this.sidesOfDie = sidesOfDie;
+    }
+
+    public void setNumberOfDice(int numberOfDice) {
+        this.numberOfDice = numberOfDice;
     }
 
     public void setNumberOfRolls(int numberOfRolls) {

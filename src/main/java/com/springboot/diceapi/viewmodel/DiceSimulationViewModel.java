@@ -1,25 +1,14 @@
-package com.springboot.diceapi.model;
+package com.springboot.diceapi.viewmodel;
 
-import com.springboot.diceapi.DiceAPI;
+import javax.validation.constraints.Min;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.UUID;
-
-@Entity
-public class DiceConfiguration {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class DiceSimulationViewModel {
     private int id;
+    @Min(value = 4L)
     private int sidesOfDie;
+    @Min(value = 4L)
     private int numberOfDice;
-
-    public  DiceConfiguration(int sidesOfDie, int numberOfDice) {
-        this.sidesOfDie = sidesOfDie;
-        this.numberOfDice = numberOfDice;
-    }
+    private int numberOfRolls;
 
     public int getId() {
         return id;
@@ -33,6 +22,10 @@ public class DiceConfiguration {
         return numberOfDice;
     }
 
+    public int getNumberOfRolls() {
+        return numberOfRolls;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -43,5 +36,9 @@ public class DiceConfiguration {
 
     public void setNumberOfDice(int numberOfDice) {
         this.numberOfDice = numberOfDice;
+    }
+
+    public void setNumberOfRolls(int numberOfRolls) {
+        this.numberOfRolls = numberOfRolls;
     }
 }
