@@ -5,10 +5,9 @@ import com.springboot.diceapi.model.DiceSimulationDetails;
 import com.springboot.diceapi.model.Die;
 import com.springboot.diceapi.model.Distribution;
 import com.springboot.diceapi.repository.DiceSimulationDetailsRepository;
-import com.springboot.diceapi.repository.DistributionRespository;
+import com.springboot.diceapi.repository.DistributionRepository;
 import org.springframework.stereotype.Service;
 
-import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +17,10 @@ public class DiceSimulationService {
     private DiceSimulationDetails diceSimulationDetails;
     private Die die;
     private DiceSimulationDetailsRepository diceSimulationDetailsRepository;
-    private DistributionRespository distributionRespository;
+    private DistributionRepository distributionRespository;
     private int[] distributionCount;
 
-    DiceSimulationService(DiceSimulationDetailsRepository diceSimulationDetailsRepository, DistributionRespository distributionRespository) {
+    DiceSimulationService(DiceSimulationDetailsRepository diceSimulationDetailsRepository, DistributionRepository distributionRespository) {
        this.diceSimulationDetailsRepository = diceSimulationDetailsRepository;
        this.distributionRespository = distributionRespository;
     }

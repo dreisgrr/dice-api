@@ -1,7 +1,11 @@
 package com.springboot.diceapi.model;
 
+import com.springboot.diceapi.controller.ConfigurationValidation;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table (name = "diceSimulation")
@@ -14,12 +18,19 @@ public class DiceSimulation {
             initialValue = 1000
     )
     private int id;
+
     @Min(value = 4L)
     private int sidesOfDie;
+
     @Min(value = 1L)
     private int numberOfDice;
-    @Min(value = 1L)
+
+    @Min(value = 1L, groups = ConfigurationValidation.class)
     private int numberOfRolls;
+
+    @OneToMany(targetEntity = Distribution.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "diceSimulationId", referencedColumnName = "id")
+    private List<Distribution> distribution;
 
     public DiceSimulation() {
 
@@ -61,5 +72,13 @@ public class DiceSimulation {
 
     public void setNumberOfRolls(int numberOfRolls) {
         this.numberOfRolls = numberOfRolls;
+    }
+
+    public List<Distribution> getDistribution() {
+        return distribution;
+    }
+
+    public void setDistribution(List<Distribution> distribution) {
+        this.distribution = distribution;
     }
 }
