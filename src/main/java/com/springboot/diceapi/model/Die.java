@@ -8,7 +8,6 @@ public class Die {
     private int diceValue;
 
     public Die(int sidesOfDie) {
-        //this.id = id;
         this.sidesOfDie = sidesOfDie;
         this.diceValue = new Random().nextInt(sidesOfDie);
     }

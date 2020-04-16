@@ -24,7 +24,7 @@ public class TotalCombinedDistributionResult {
         double dTotalRolls = (double) percentage;
         double converted = (dFrequency/dTotalRolls)*100;
         DecimalFormat df = new DecimalFormat("#.##");
-        return String.valueOf(df.format(converted));
+        return String.valueOf(df.format(converted))+"%";
     }
 
     public int getTotalOfDiceValues() {

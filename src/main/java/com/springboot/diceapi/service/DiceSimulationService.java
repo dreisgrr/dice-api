@@ -21,8 +21,8 @@ public class DiceSimulationService {
     private int[] distributionCount;
 
     DiceSimulationService(DiceSimulationDetailsRepository diceSimulationDetailsRepository, DistributionRepository distributionRespository) {
-       this.diceSimulationDetailsRepository = diceSimulationDetailsRepository;
-       this.distributionRespository = distributionRespository;
+        this.diceSimulationDetailsRepository = diceSimulationDetailsRepository;
+        this.distributionRespository = distributionRespository;
     }
 
     public List<Distribution> runSimulation(DiceSimulation diceSimulation) {

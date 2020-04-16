@@ -5,7 +5,6 @@ import com.springboot.diceapi.controller.ConfigurationValidation;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table (name = "diceSimulation")
