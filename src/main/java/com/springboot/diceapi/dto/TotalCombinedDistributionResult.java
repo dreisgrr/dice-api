@@ -1,20 +1,30 @@
 package com.springboot.diceapi.dto;
 
+import java.text.DecimalFormat;
+
 public class TotalCombinedDistributionResult {
-    private Long simulations;
+
     private int totalOfDiceValues;
     private Long frequency;
-    private Long totalNumberOfRolls;
+    private String percentage;
 
-    public TotalCombinedDistributionResult(Long simulations, int totalOfDiceValues, Long frequency, Long totalNumberOfRolls) {
-        this.simulations = simulations;
+    public TotalCombinedDistributionResult(int totalOfDiceValues, Long frequency, Long percentage) {
         this.totalOfDiceValues = totalOfDiceValues;
         this.frequency = frequency;
-        this.totalNumberOfRolls = totalNumberOfRolls;
+        this.percentage = computePercentage(frequency, percentage);
     }
 
-    public Long getSimulations() {
-        return simulations;
+    public TotalCombinedDistributionResult(int totalOfDiceValues, Long frequency) {
+        this.totalOfDiceValues = totalOfDiceValues;
+        this.frequency = frequency;
+    }
+
+    private String computePercentage(Long frequency, Long percentage) {
+        double dFrequency = (double) frequency;
+        double dTotalRolls = (double) percentage;
+        double converted = (dFrequency/dTotalRolls)*100;
+        DecimalFormat df = new DecimalFormat("#.##");
+        return String.valueOf(df.format(converted));
     }
 
     public int getTotalOfDiceValues() {
@@ -25,9 +35,7 @@ public class TotalCombinedDistributionResult {
         return frequency;
     }
 
-    public void setSimulations(Long simulations) {
-        this.simulations = simulations;
-    }
+    public String getPercentage() { return percentage; }
 
     public void setTotalOfDiceValues(int totalOfDiceValues) {
         this.totalOfDiceValues = totalOfDiceValues;
@@ -37,11 +45,7 @@ public class TotalCombinedDistributionResult {
         this.frequency = frequency;
     }
 
-    public Long getTotalNumberOfRolls() {
-        return totalNumberOfRolls;
-    }
-
-    public void setTotalNumberOfRolls(Long totalNumberOfRolls) {
-        this.totalNumberOfRolls = totalNumberOfRolls;
+    public void setPercentage(String percentage) {
+        this.percentage = percentage;
     }
 }

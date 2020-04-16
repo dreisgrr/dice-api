@@ -1,5 +1,6 @@
 package com.springboot.diceapi.repository;
 
+import com.springboot.diceapi.dto.DiceSimulationResult;
 import com.springboot.diceapi.dto.DistributionByCombination;
 import com.springboot.diceapi.dto.TotalCombinedDistributionResult;
 import com.springboot.diceapi.model.DiceSimulation;
@@ -12,14 +13,13 @@ import java.util.List;
 @Repository
 public interface DiceSimulationRepository extends JpaRepository<DiceSimulation, Integer> {
 
-    @Query("SELECT SUM(u.numberOfRolls) from DiceSimulation u WHERE sidesOfDie = ?1 AND numberOfDice = ?2")
-    int getSumNumberOfRolls(int sidesOfDie, int numberOfDice);
+    @Query("SELECT new com.springboot.diceapi.dto.DiceSimulationResult(SUM(ds.numberOfRolls), COUNT(ds.id) as simulations) FROM DiceSimulation ds WHERE ds.sidesOfDie = ?1 AND ds.numberOfDice = ?2")
+    public DiceSimulationResult getSumNumberOfRolls(int sidesOfDie, int numberOfDice);
 
-    //Returns Frequency for each Number Total given Dice Side and Dice Quantity as parameters
-    //Not yet grouped -- Frequency is yet to be implemented using SUM
-    @Query("SELECT new com.springboot.diceapi.dto.DistributionByCombination(d.totalOfDiceValues, d.frequency) FROM DiceSimulation ds JOIN ds.distribution d")
-    public List<DistributionByCombination> getJoin();
+    @Query("SELECT new com.springboot.diceapi.dto.TotalCombinedDistributionResult(d.totalOfDiceValues, SUM(d.frequency)) FROM DiceSimulation ds JOIN ds.distribution d WHERE ds.id = ?1 GROUP BY d.totalOfDiceValues ORDER BY d.totalOfDiceValues ASC")
+    public List<TotalCombinedDistributionResult> getDistributionBySimulation(int id);
 
-    @Query("SELECT new com.springboot.diceapi.dto.TotalCombinedDistributionResult(COUNT(ds.id), d.totalOfDiceValues, SUM(d.frequency), SUM(ds.numberOfRolls)) FROM DiceSimulation ds JOIN ds.distribution d GROUP BY d.totalOfDiceValues ORDER BY d.totalOfDiceValues ASC")
-    public List<TotalCombinedDistributionResult> getTest();
+    //@Query("SELECT new com.springboot.diceapi.dto.TotalCombinedDistributionResult(d.totalOfDiceValues, SUM(d.frequency), ROUND((((SUM(d.frequency))/(SUM(ds.numberOfRolls)))*100),2)) FROM DiceSimulation ds JOIN ds.distribution d WHERE ds.sidesOfDie = ?1 AND ds.numberOfDice = ?2 GROUP BY d.totalOfDiceValues ORDER BY d.totalOfDiceValues ASC")
+    @Query("SELECT new com.springboot.diceapi.dto.TotalCombinedDistributionResult(d.totalOfDiceValues, SUM(d.frequency), SUM(ds.numberOfRolls)) FROM DiceSimulation ds JOIN ds.distribution d WHERE ds.sidesOfDie = ?1 AND ds.numberOfDice = ?2 GROUP BY d.totalOfDiceValues ORDER BY d.totalOfDiceValues ASC")
+    public List<TotalCombinedDistributionResult> getTotalCombinedDistributionByCombination(int sidesOfDie, int numberOfDice);
 }
