@@ -1,6 +1,7 @@
 package com.springboot.diceapi.controller;
 
 import com.springboot.diceapi.dto.DistributionByCombination;
+import com.springboot.diceapi.dto.TotalCombinedDistributionResult;
 import com.springboot.diceapi.model.DiceSimulation;
 import com.springboot.diceapi.model.Distribution;
 import com.springboot.diceapi.repository.DiceSimulationRepository;
@@ -11,10 +12,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.swing.text.html.parser.Entity;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.xml.bind.ValidationException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -24,9 +31,6 @@ public class DiceSimulationController {
     private DiceSimulationRepository diceSimulationRepository;
     @Autowired
     private DiceSimulationService diceSimulationService;
-//    DiceSimulationController(DiceSimulationRepository diceSimulationRepository) {
-//        this.diceSimulationRepository = diceSimulationRepository;
-//    }
 
     @PostMapping
     public List<Distribution> rollDice(@Validated({ConfigurationValidation.class})  @RequestBody DiceSimulation diceSimulation, BindingResult bindingResult) throws ValidationException {
@@ -46,9 +50,13 @@ public class DiceSimulationController {
         return  this.diceSimulationRepository.getSumNumberOfRolls(diceSimulation.getSidesOfDie(), diceSimulation.getNumberOfDice());
     }
 
-    @GetMapping("/distribution")
+    @GetMapping("/distributions")
     public List<DistributionByCombination> getDistribution() {
         return this.diceSimulationRepository.getJoin();
+    }
+    @GetMapping("/distribution")
+    public List<TotalCombinedDistributionResult> test() {
+        return this.diceSimulationRepository.getTest();
     }
 
 }

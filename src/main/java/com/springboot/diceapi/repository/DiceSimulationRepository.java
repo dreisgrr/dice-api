@@ -1,6 +1,7 @@
 package com.springboot.diceapi.repository;
 
 import com.springboot.diceapi.dto.DistributionByCombination;
+import com.springboot.diceapi.dto.TotalCombinedDistributionResult;
 import com.springboot.diceapi.model.DiceSimulation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,7 @@ public interface DiceSimulationRepository extends JpaRepository<DiceSimulation, 
     //Not yet grouped -- Frequency is yet to be implemented using SUM
     @Query("SELECT new com.springboot.diceapi.dto.DistributionByCombination(d.totalOfDiceValues, d.frequency) FROM DiceSimulation ds JOIN ds.distribution d")
     public List<DistributionByCombination> getJoin();
+
+    @Query("SELECT new com.springboot.diceapi.dto.TotalCombinedDistributionResult(COUNT(ds.id), d.totalOfDiceValues, SUM(d.frequency), SUM(ds.numberOfRolls)) FROM DiceSimulation ds JOIN ds.distribution d GROUP BY d.totalOfDiceValues ORDER BY d.totalOfDiceValues ASC")
+    public List<TotalCombinedDistributionResult> getTest();
 }
