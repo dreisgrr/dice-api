@@ -47,10 +47,8 @@ public class DiceSimulationController {
     }
 
     @GetMapping("/distribution")
-    public List<DistributionByCombination> test() {
-        System.out.println("Hit");
-        List<DistributionByCombination> test = this.diceSimulationRepository.getJoin();
-        return test;
+    public List<DistributionByCombination> getDistribution() {
+        return this.diceSimulationRepository.getJoin();
     }
 
 }

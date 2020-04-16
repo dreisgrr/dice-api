@@ -4,27 +4,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DistributionByCombination {
     private int totalOfDiceValue;
-    private long frequency;
-
-    public  DistributionByCombination() {
-        this.totalOfDiceValue = 0;
-        this.frequency = 0;
-    }
+    private int frequency;
 
     public DistributionByCombination(int totalOfDiceValue, int frequency) {
-        this();
         this.totalOfDiceValue = totalOfDiceValue;
         this.frequency = frequency;
     }
 
-    public long getTotalOfDiceValue() {
+    public int getTotalOfDiceValue() {
         return totalOfDiceValue;
     }
 
-    public long getFrequency() {
+    public int getFrequency() {
         return frequency;
     }
 

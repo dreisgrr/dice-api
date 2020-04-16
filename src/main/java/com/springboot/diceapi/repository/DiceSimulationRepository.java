@@ -14,8 +14,8 @@ public interface DiceSimulationRepository extends JpaRepository<DiceSimulation, 
     @Query("SELECT SUM(u.numberOfRolls) from DiceSimulation u WHERE sidesOfDie = ?1 AND numberOfDice = ?2")
     int getSumNumberOfRolls(int sidesOfDie, int numberOfDice);
 
-    //@Query("SELECT new com.springboot.diceapi.dto.DistributionByCombination(d.totalOfDiceValues, COUNT(d.frequency)) FROM DiceSimulation s JOIN s.distribution d ORDER BY d.totalOfDiceValues")
-    //@Query("SELECT d.totalOfDiceValues, d.frequency FROM DiceSimulation s JOIN Distribution d ON s.id=d.diceSimulationId ")
+    //Returns Frequency for each Number Total given Dice Side and Dice Quantity as parameters
+    //Not yet grouped -- Frequency is yet to be implemented using SUM
     @Query("SELECT new com.springboot.diceapi.dto.DistributionByCombination(d.totalOfDiceValues, d.frequency) FROM DiceSimulation ds JOIN ds.distribution d")
     public List<DistributionByCombination> getJoin();
 }
