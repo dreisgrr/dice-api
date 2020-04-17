@@ -8,6 +8,7 @@ import com.springboot.diceapi.model.Distribution;
 import com.springboot.diceapi.repository.DiceSimulationRepository;
 import com.springboot.diceapi.service.DiceSimulationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,20 +32,23 @@ public class DiceSimulationController {
         }
         this.diceSimulationRepository.save(diceSimulation);
         //execute Service
-        return diceSimulationService.runSimulation(diceSimulation);
+        List<Distribution> result = diceSimulationService.runSimulation(diceSimulation);
+        if(result.isEmpty()) throw new ValidationException("There was an error processing your request. Please try again.");
+        return result;
     }
 
     @GetMapping("/total")
-    public DiceSimulationResult totalRollsByCombination(@Valid @RequestBody DiceSimulation diceSimulation, BindingResult bindingResult) {
+    public DiceSimulationResult totalRollsByCombination(@Valid @RequestBody DiceSimulation diceSimulation, BindingResult bindingResult) throws ValidationException {
         if(bindingResult.hasErrors()) {
             throw new javax.validation.ValidationException("There are errors in the query parameters.");
         }
         DiceSimulationResult result = this.diceSimulationRepository.getSumNumberOfRolls(diceSimulation.getSidesOfDie(), diceSimulation.getNumberOfDice());
-        return  this.diceSimulationRepository.getSumNumberOfRolls(diceSimulation.getSidesOfDie(), diceSimulation.getNumberOfDice());
+        if(result.getSimulations() == 0) throw new NotFoundException();
+        return result;
     }
 
     @GetMapping("/distribution")
-    public TotalCombinedDistributionResponse getDistribution(@Valid @RequestBody DiceSimulation diceSimulation, BindingResult bindingResult) {
+    public TotalCombinedDistributionResponse getDistribution(@Valid @RequestBody DiceSimulation diceSimulation, BindingResult bindingResult) throws ValidationException {
         if(bindingResult.hasErrors()) {
             throw new javax.validation.ValidationException("Invalid query parameter/s.");
         }
@@ -58,13 +62,16 @@ public class DiceSimulationController {
         response.setTotalRolls(diceSimulationResult.getTotalRolls());
         response.setNumberOfSumResult(diceSimulation.getNumberOfDice()*diceSimulation.getSidesOfDie());
         response.setDistribution(distributionResults);
-
+        if(response.getSimulations() == 0) throw new NotFoundException();
         return response;
     }
 
     @GetMapping("/{id}")
-    public DiceSimulation getDistributionBySimulation(@PathVariable int id) {
-        return this.diceSimulationRepository.findOne(id);
+    public DiceSimulation getDistributionBySimulation(@PathVariable int id) throws ValidationException {
+        return this.diceSimulationRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public class NotFoundException extends RuntimeException {
+    }
 }
