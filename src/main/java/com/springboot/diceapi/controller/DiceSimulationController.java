@@ -19,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/diceapi/simulation")
+@CrossOrigin(origins = "http://localhost:4200")
 public class DiceSimulationController {
     @Autowired
     private DiceSimulationRepository diceSimulationRepository;
@@ -37,17 +38,17 @@ public class DiceSimulationController {
         return result;
     }
 
-    @GetMapping("/total")
+    @PostMapping("/statistics/total")
     public DiceSimulationResult totalRollsByCombination(@Valid @RequestBody DiceSimulation diceSimulation, BindingResult bindingResult) throws ValidationException {
         if(bindingResult.hasErrors()) {
-            throw new javax.validation.ValidationException("There are errors in the query parameters.");
+            throw new ValidationException("There are errors in the query parameters.");
         }
         DiceSimulationResult result = this.diceSimulationRepository.getSumNumberOfRolls(diceSimulation.getSidesOfDie(), diceSimulation.getNumberOfDice());
         if(result.getSimulations() == 0) throw new NotFoundException();
         return result;
     }
 
-    @GetMapping("/distribution")
+    @PostMapping("/statistics/distribution")
     public TotalCombinedDistributionResponse getDistribution(@Valid @RequestBody DiceSimulation diceSimulation, BindingResult bindingResult) throws ValidationException {
         if(bindingResult.hasErrors()) {
             throw new javax.validation.ValidationException("Invalid query parameter/s.");
@@ -69,6 +70,11 @@ public class DiceSimulationController {
     @GetMapping("/{id}")
     public DiceSimulation getDistributionBySimulation(@PathVariable int id) throws ValidationException {
         return this.diceSimulationRepository.findById(id).orElseThrow(NotFoundException::new);
+    }
+
+    @GetMapping("/all")
+    public List<DiceSimulation> getAllDistributionBySimulation() {
+        return this.diceSimulationRepository.findAll();
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
