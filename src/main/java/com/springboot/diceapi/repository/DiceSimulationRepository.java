@@ -14,6 +14,8 @@ import java.util.Optional;
 public interface DiceSimulationRepository extends JpaRepository<DiceSimulation, Integer> {
     Optional<DiceSimulation> findById(int id);
 
+    public List<DiceSimulation> findAllByOrderByIdDesc();
+
     //Rename to getSimulationStatsByCombination
     @Query("SELECT new com.springboot.diceapi.dto.DiceSimulationResult(SUM(ds.numberOfRolls), COUNT(ds.id) as simulations) FROM DiceSimulation ds WHERE ds.sidesOfDie = ?1 AND ds.numberOfDice = ?2")
     public DiceSimulationResult getSumNumberOfRolls(int sidesOfDie, int numberOfDice);

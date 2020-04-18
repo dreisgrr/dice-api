@@ -26,7 +26,7 @@ public class DiceSimulationController {
     @Autowired
     private DiceSimulationService diceSimulationService;
 
-    @PostMapping
+    @PostMapping("/run")
     public List<Distribution> rollDice(@Validated({ConfigurationValidation.class})  @RequestBody DiceSimulation diceSimulation, BindingResult bindingResult) throws ValidationException {
         if(bindingResult.hasErrors()) {
             throw new ValidationException("Dice configuration has errors. Unable run simulation.");
@@ -67,14 +67,15 @@ public class DiceSimulationController {
         return response;
     }
 
-    @GetMapping("/{id}")
+    @PostMapping("/{id}")
     public DiceSimulation getDistributionBySimulation(@PathVariable int id) throws ValidationException {
         return this.diceSimulationRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     @GetMapping("/all")
     public List<DiceSimulation> getAllDistributionBySimulation() {
-        return this.diceSimulationRepository.findAll();
+        //return this.diceSimulationRepository.findAll();
+        return this.diceSimulationRepository.findAllByOrderByIdDesc();
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
