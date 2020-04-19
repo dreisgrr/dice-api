@@ -9,7 +9,7 @@ public class Die {
 
     public Die(int sidesOfDie) {
         this.sidesOfDie = sidesOfDie;
-        this.diceValue = new Random().nextInt(sidesOfDie);
+        this.diceValue = new Random().nextInt(sidesOfDie)+1;
     }
 
     public int getId() {
