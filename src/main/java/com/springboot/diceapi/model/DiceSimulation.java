@@ -30,6 +30,9 @@ public class DiceSimulation {
     @OneToMany(targetEntity = Distribution.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "diceSimulationId", referencedColumnName = "id")
     private List<Distribution> distribution;
+    @OneToMany(targetEntity = DiceSimulationDetails.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "diceSimulationId", referencedColumnName = "id")
+    private List<DiceSimulationDetails> details;
 
     public DiceSimulation() {
 
@@ -79,5 +82,13 @@ public class DiceSimulation {
 
     public void setDistribution(List<Distribution> distribution) {
         this.distribution = distribution;
+    }
+
+    public List<DiceSimulationDetails> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<DiceSimulationDetails> details) {
+        this.details = details;
     }
 }
