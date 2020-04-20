@@ -61,7 +61,17 @@ The following are the endpoints and their description:
       "frequency": 2
     },
     {...}
-  ]
+  ],
+  "details": [
+      {
+        "id": 2772,
+        "diceSimulationId": 84,
+        "rollNumber": 1,
+        "diceNumber": 1,
+        "diceValue": 4
+      },
+      {...}
+   ]
 }
 "/diceapi/simulation/statistics/total"
  - Validates the request body and throws a validation exception if invalid
